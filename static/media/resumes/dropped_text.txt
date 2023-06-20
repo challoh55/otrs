@@ -1,0 +1,5 @@
+/home/challoh/Desktop/chalo/otrsenv/otrs_project/templates/chat/chatroom.html
+/home/challoh/Desktop/chalo/otrsenv/otrs_project/templates/users/base.html
+/home/challoh/Desktop/chalo/otrsenv/otrs_project/templates/users/home.html
+/home/challoh/Desktop/chalo/otrsenv/otrs_project/chat/views.py
+/home/challoh/Desktop/chalo/otrsenv/otrs_project/chat/urls.py

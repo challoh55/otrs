@@ -1,0 +1,452 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+
+{% load static %}
+<!-- Teachers searching section -->
+<div class="section bg-secondary">
+    <div class="container mt-0 pt-5 pb-4 ">
+
+        <h1 class="mb-4">Searching for a Job? Find the Best preffered Job at Your Best County</h1>
+
+        <form action="{% url 'home-page' %}" method="GET">
+            <div class="row">
+                <div class="col-md-3">
+                    <select class="form-select mb-3" aria-label="Select Subject" name="subject">
+                        <option value="" {% if not subject %}selected{% endif %}selected class="text-black">Select Subject</option>
+                        <option value="Mathematics" {% if subject == "Mathematics" %} selected {% endif %}>Mathematics</option>
+                        <option value="English" {% if subject == "English" %} selected {% endif %}>English</option>
+                        <option value="Kiswahili" {% if subject == "Kiswahili" %} selected {% endif %}>Kiswahili</option>
+                        <option value="Physics" {% if subject == "Physics" %} selected {% endif %}>Physics</option>
+                        <option value="Chemistry" {% if subject == "Chemistry" %} selected {% endif %}>Chemistry</option>
+                        <option value="Biology" {% if subject == "Biology" %} selected {% endif %}>Biology</option>
+                        <option value="History & government" {% if subject == "History & government" %} selected {% endif %}>History & government</option>
+                        <option value="Christian Religion" {% if subject == "Christian Religion" %} selected {% endif %}>Christian Religion</option>
+                        <option value="Islamic Religion" {% if subject == "Islamic Religion" %} selected {% endif %}>Islamic Religion</option>
+                        <option value="Hindu Religion" {% if subject == "Hindu Religion" %} selected {% endif %}>Hindu Religion</option>
+                        <option value="Computer Studies" {% if subject == "Computer Studies" %} selected {% endif %}>Computer Studies</option>
+                        <option value="Agriculture" {% if subject == "Agriculture" %} selected {% endif %}>Agriculture</option>
+                        <option value="Art & Design" {% if subject == "Art & Design" %} selected {% endif %}>Art & Design</option>
+                        <option value="Home Science" {% if subject == "Home Science" %} selected {% endif %}>Home Science</option>
+                        <option value="Business Studies" {% if subject == "Business Studies" %} selected {% endif %}>Business Studies</option>
+                        <option value="Music" {% if subject == "Music" %} selected {% endif %}>Music</option>
+                        <option value="French" {% if subject == "French" %} selected {% endif %}>French</option>
+                        <option value="Germany" {% if subject == "Germany" %} selected {% endif %}>Germany</option>
+                        <option value="Arabic" {% if subject == "Arabic" %} selected {% endif %}>Arabic</option>
+
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select mb-3" name="location">
+                        <option value="" {% if not location %}selected{% endif %}selected class="text-black">Select County</option>
+                        <option value="Mombasa" {% if location == "Mombasa" %} selected {% endif %}>Mombasa</option>
+                        <option value="Kwale" {% if location == "Kwale" %} selected {% endif %}>Kwale</option>
+                        <option value="Kilifi" {% if location == "Kilifi" %} selected {% endif %}>Kilifi</option>
+                        <option value="Tana River" {% if location == "Tana River" %} selected {% endif %}>Tana River</option>
+                        <option value="Garissa" {% if location == "Garissa" %} selected {% endif %}>Garissa</option>
+                        <option value="Wajir" {% if location == "Wajir" %} selected {% endif %}>Wajir</option>
+                        <option value="Mandera" {% if location == "Mandera" %} selected {% endif %}>Mandera</option>
+                        <option value="Marsabit" {% if location == "Marsabit" %} selected {% endif %}>Marsabit</option>
+                        <option value="Isiolo" {% if location == "Isiolo" %} selected {% endif %}>Isiolo</option>
+                        <option value="Meru" {% if location == "Meru" %} selected {% endif %}>Meru</option>
+                        <option value="Tharaka Nithi" {% if location == "Tharaka Nithi" %} selected {% endif %}>Tharaka Nithi</option>
+                        <option value="Embu" {% if location == "Embu" %} selected {% endif %}>Embu</option>
+                        <option value="Kitui" {% if location == "Kitui" %} selected {% endif %}>Kitui</option>
+                        <option value="Machakos" {% if location == "Machakos" %} selected {% endif %}>Machakos</option>
+                        <option value="Makueni" {% if location == "Makueni" %} selected {% endif %}>Makueni</option>
+                        <option value="Nyandarua" {% if location == "Nyandarua" %} selected {% endif %}>Nyandarua</option>
+                        <option value="Kirinyaga" {% if location == "Kirinyaga" %} selected {% endif %}>Kirinyaga</option>
+                        <option value="Murang'a" {% if location == "Murang'a" %} selected {% endif %}>Murang'a</option>
+                        <option value="Kiambu" {% if location == "Kiambu" %} selected {% endif %}>Kiambu</option>
+                        <option value="Turkana" {% if location == "Turkana" %} selected {% endif %}>Turkana</option>
+                        <option value="West Pokot" {% if location == "West Pokot" %} selected {% endif %}>West Pokot</option>
+                        <option value="Samburu" {% if location == "Samburu" %} selected {% endif %}>Samburu</option>
+                        <option value="Trans-Nzoia" {% if location == "Trans-Nzoia" %} selected {% endif %}>Trans-Nzoia</option>
+                        <option value="Uasin-Gishu" {% if location == "Uasin-Gishu" %} selected {% endif %}>Uasin-Gishu</option>
+                        <option value="Elgeiyo-Marakwet" {% if location == "Elgeiyo-Marakwet" %} selected {% endif %}>Elgeiyo-Marakwet</option>
+                        <option value="Nandi" {% if location == "Nandi" %} selected {% endif %}>Nandi</option>
+                        <option value="baringo" {% if location == "baringo" %} selected {% endif %}>baringo</option>
+                        <option value="Laikipia" {% if location == "Laikipia" %} selected {% endif %}>Laikipia</option>
+                        <option value="Nakuru" {% if location == "Nakuru" %} selected {% endif %}>Nakuru</option>
+                        <option value="Narok" {% if location == "Narok" %} selected {% endif %}>Narok</option>
+                        <option value="Kajiado" {% if location == "Kajiado" %} selected {% endif %}>Kajiado</option>
+                        <option value="Kericho" {% if location == "Kericho" %} selected {% endif %}>Kericho</option>
+                        <option value="Bomet" {% if location == "Bomet" %} selected {% endif %}>Bomet</option>
+                        <option value="Kakamega" {% if location == "Kakamega" %} selected {% endif %}>Kakamega</option>
+                        <option value="Vihiga" {% if location == "Vihiga" %} selected {% endif %}>Vihiga</option>
+                        <option value="Bungoma" {% if location == "Bungoma" %} selected {% endif %}>Bungoma</option>
+                        <option value="Busia" {% if location == "Busia" %} selected {% endif %}>Busia</option>
+                        <option value="Siaya" {% if location == "Siaya" %} selected {% endif %}>Siaya</option>
+                        <option value="Kisumu" {% if location == "Kisumu" %} selected {% endif %}>Kisumu</option>
+                        <option value="Homa Bay" {% if location == "Homa Bay" %} selected {% endif %}>Homa Bay</option>
+                        <option value="Migori" {% if location == "Migori" %} selected {% endif %}>Migori</option>
+                        <option value="Kisii" {% if location == "Kisii" %} selected {% endif %}>Kisii</option>
+                        <option value="Nyamira" {% if location == "Nyamira" %} selected {% endif %}>Nyamira</option>
+                        <option value="Nairobi" {% if location == "Nairobi" %} selected {% endif %}>Nairobi</option>
+                        <option value="Kitui" {% if location == "Kitui" %} selected {% endif %}>Kitui</option>
+                        <option value="Kitui" {% if location == "Kitui" %} selected {% endif %}>Kitui</option>
+                        <option value="Kitui" {% if location == "Kitui" %} selected {% endif %}>Kitui</option>
+                        <option value="Kitui" {% if location == "Kitui" %} selected {% endif %}>Kitui</option>
+
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select mb-3" name="school_type">
+                        <option value="" {% if not school_type %}selected{% endif %}selected class="text-black">Select School type</option>
+                        <option value="National School" {% if school_type == "National School" %} selected {% endif %}>National School</option>
+                        <option value="Regional School" {% if school_type == "Regional School" %} selected {% endif %}>Regional School</option>
+                        <option value="Extra-County School" {% if school_type == "Extra-County School" %} selected {% endif %}>Extra-County School</option>
+                        <option value="County School" {% if school_type == "County School" %} selected {% endif %}>County School</option>
+                        <option value="Sub-County School" {% if school_type == "Sub-County School" %} selected {% endif %}>Sub-County School</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary btn-block " type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Available Open Job Positions in a card-->
+<div class="container my-5">
+    {% if user.is_teacher and not user.has_resume %}
+    <div class="alert alert-info text-center">
+        You have not yet created a resume. Please
+        <a href="{% url 'teacher_resume' %}"> Create a Resume</a> Here
+    </div>
+    {% elif user.is_teacher and user.has_resume %}
+    <div class="alert alert-info text-center">
+        You can start applying for jobs and contact schools with jobs
+    </div>
+    {% endif %}
+    <div class="card p-4" >
+        <h1 class="mb-2 text-center">Available Open Job Positions</h1>
+        <div class="row">
+            {% for job in page.object_list %}
+            {% if job.is_active %}
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center px-0">
+                        <small>Posted {{ job.created_at|timesince }} ago</small>
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">Subject: {{ job.subject }}</p>
+                        <p class="m-0">County: {{ job.school.location }} County</p>
+                        <p class="m-0">School: {{ job.school.user.username }}</p>
+                        <p class="m-0">Type: {{ job.school.school_type }}</p>
+                        <div class="card-btn btn-lg text-center m-2">
+                            <a href="{% url 'view_job' %}?id={{ job.id }}"><button type="submit"
+                                    class="text-bg-success rounded-2 btn">View & Apply Job</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="mt-5">
+            <nav aria-label="page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item ">
+                        {% if page.has_previous %}
+                        <a class="page-link"
+                            href="{% url 'teacher_home' %}?page={{ page.previous_page_number }}">Previous</a>
+                        {% endif %}
+                    </li>
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">{{ page.number }}</a>
+                    </li>
+                    <li class="page-item">
+                        {% if page.has_next %}
+                        <a class="page-link" href="{% url 'teacher_home' %}?page={{ page.next_page_number }}">Next</a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<!-- Most applied jobs in the last one month -->
+<!-- <div class="container my-5">
+    <div class="card p-4" >
+        <h1 class="mb-2 text-center">Most Applied Jobs In Last One Month</h1>
+        <div class="row">
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    
+                    <div class="card-header text-center px-0">
+                        <small>Posted 2 days ago</small>
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">Subject: Mathematics</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Kapsabet boys high school</p>
+                        <div class="card-btn btn-lg text-center m-2">
+                            <a href="#"><button type="submit" class="text-bg-success rounded-2 btn">View & Apply Job</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        <div class="mt-5">
+            <nav aria-label="page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item ">
+                        <a class="page-link" href="#">Previous</a>
+                    </li>
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</div>
+ -->
+
+<div class="container mt-4">
+    <h2 class="mb-4">Testimonials</h2>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="{% static 'images/7.jpeg' %}" class="card-img-top" alt="Testimonial Image 1">
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>"The online teacher recruitment system helped me find my dream teaching job. The application process was seamless, and the support team was incredibly helpful throughout the entire process. I'm grateful for this platform!"</p>              
+                <footer class="blockquote-footer">John Doe</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="{% static 'images/7.jpeg' %}" class="card-img-top" alt="Testimonial Image 1">
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>"I was skeptical about applying for a teaching position online, but the online teacher recruitment system exceeded my expectations. I found multiple job opportunities that matched my qualifications, and the platform made it easy to submit my applications. I'm now happily teaching in a school I found through this platform!"</p>              
+                <footer class="blockquote-footer">Jane Smith</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="{% static 'images/7.jpeg' %}" class="card-img-top" alt="Testimonial Image 1">
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>"I highly recommend the online teacher recruitment system to any aspiring teacher. The platform is user-friendly, and the job listings are updated regularly. I found my first teaching position through this system, and it has been an incredible journey so far. Thank you!"</p>
+              <footer class="blockquote-footer">David Johnson</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="{% static 'images/7.jpeg' %}" class="card-img-top" alt="Testimonial Image 1">
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>"I had been searching for a teaching job for months with no luck until I discovered the online teacher recruitment system. The platform made it easy for me to showcase my skills and qualifications, and I received multiple interview requests within a short period. I'm grateful for this platform and the opportunities it provided me!"</p>
+              <footer class="blockquote-footer">Emilly Wilson</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      
+    </div>
+  </div>
+
+
+
+<!-- schools with most jobs  -->
+<!-- <div class="container my-5">
+    <div class="card p-4">
+        <h1 class="mb-2 text-center">Schools With Most Jobs</h1>
+        <div class="row">
+
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center">
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">School: Kapsabet boys high school</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Number of jobs: <a href="#">16</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center">
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">School: Kapsabet boys high school</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Number of jobs: <a href="#">17</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center">
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">School: Kapsabet boys high school</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Number of jobs: <a href="#">11</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center">
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">School: Kapsabet boys high school</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Number of jobs: <a href="#">13</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center">
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">School: Kapsabet boys high school</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Number of jobs: <a href="#">13</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center">
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">School: Kapsabet boys high school</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Number of jobs: <a href="#">13</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center">
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">School: Kapsabet boys high school</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Number of jobs: <a href="#">13</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center">
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">School: Kapsabet boys high school</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Number of jobs: <a href="#">13</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center">
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">School: Kapsabet boys high school</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Number of jobs: <a href="#">13</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center">
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">School: Kapsabet boys high school</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Number of jobs: <a href="#">13</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center">
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">School: Kapsabet boys high school</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Number of jobs: <a href="#">13</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center">
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">School: Kapsabet boys high school</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Number of jobs: <a href="#">13</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center">
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">School: Kapsabet boys high school</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Number of jobs: <a href="#">13</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 my-3">
+                <div class="card bg-body-secondary pb-2">
+                    <div class="card-header text-center">
+                    </div>
+                    <div class="card-body text-center p-0">
+                        <p class="m-0">School: Kapsabet boys high school</p>
+                        <p class="m-0">County: Nandi County</p>
+                        <p class="m-0">Number of jobs: <a href="#">13</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-5">
+            <nav aria-label="page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item ">
+                        <a class="page-link" href="#">Previous</a>
+                    </li>
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div> -->
+
+{% endblock %}

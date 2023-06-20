@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <!-- View teacher & About the teacher-->
+  <div class="container">
+    <div class="card my-5">
+        <div class="card-body">
+            <div class="card-header m-0">
+                <h1>Teachers Name : {{ teacher.fname }} {{ teacher.lname }}</h1>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card-text">
+                        <h5 class="card-title">Email: {{ teacher.user.email }}</h5><br>
+                        <h5 class="card-title">Phone: {{ teacher.phonenumber }}</h5><br>
+                        <h5 class="card-title">Subject: {{ teacher.subject }}</h5><br>
+                        <h5 class="card-title">ID Number: {{ teacher.idnumber }}</h5><br>
+                        <h5 class="card-title">DOB: {{ teacher.dob }}</h5><br>
+                        <h5 class="card-title">Gender: {{ teacher.get_gender_display }}</h5><br>
+                        <h5 class="card-title">County: From {{ teacher.location }} county</h5><br>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img src="{{ teacher.image.url }}" class="card-img-top" alt="Profile Image">
+                </div>
+            </div>
+            <div class="card-text">
+                <h2>Other Description About the teacher</h2>
+                <p>{{ teacher.description }}</p>
+            </div>
+            <div class="card-text mb-5">
+                {% if teacher.resume %}
+                <h5><a href="{{ teacher.resume.url }}">Download their Resume</a></h5> 
+                {% else %}
+                <h5>No resume available </h5>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <div class="card-btn text-center">
+                    <a href="{% url 'chat_room' teacher.user.id %}"><button class="btn btn-primary btn-lg ">Message the teacher</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

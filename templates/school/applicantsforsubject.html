@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container ">
+    <div class="card my-5 p-3 table-responsive" >
+        <div>
+            <h1 class="text-center">{{ subject }} Applicants </h1>
+        </div>
+        <table class="table table-bordered bg-body-secondary ">
+            <thead>
+                <tr class="bg-primary">
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Id number</th>
+                    <th>Application Date</th>
+                    <th>Action</th>
+                    <!-- <th>Action</th> -->
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                    <tr>
+                        <td>{{ application.teacher.teacher.fname }} {{ application.teacher.teacher.lname }}</td>
+                        <td>{{ application.teacher.teacher.phonenumber }}</td>
+                        <td>{{ application.teacher.teacher.idnumber }}</td>
+                        <td>{{ application.application_date }}</td>
+                        <td><a href="{% url 'view_teacher' %}?teacher_id={{ application.teacher.teacher.user_id }}">View Teacher</a></td>
+                        <!-- <td><a href="{{ application.teacher.teacher.resume.url }}">Download Resume</a></td> -->
+                        <td><select class="form-select mb-3">
+                            <option selected>Update Status</option>
+                            <option value="school1">Pending</option>
+                            <option value="school2">Received</option>
+                            <option value="school3">Accepted</option>
+                            <option value="school4">Rejected</option>
+                        </select></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            
+        </table>
+    </div>
+</div>
+
+{% endblock %}

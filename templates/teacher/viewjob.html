@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- View Job & About the Job-->
+<div class="container">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-primary mt-5 text-center" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="card my-5 ">
+        <div class="card-body">
+            <div class="card-header m-0">
+                <h2>Vacancy for a {{ job.subject }} Teacher</h2>
+            </div>
+            <br>
+            <div class="card-text">
+                <h4>Job Description</h4>
+                <p>{{job.description}}
+            </div>
+            <div class="card-text">
+                <h4>Job Requirements</h4>
+                <p>{{job.requirements}}</p>
+            </div>
+            <div class="card-text">
+                <h4>Job Qualifications</h4>
+                <p>{{job.qualifications}}</p>
+            </div>
+            <div class="card-text my-5">
+                <h4>Salary: {{ job.salary }} KSH</h4>
+            </div>
+            <div class="card-text">
+                <!-- pull the data abot school from the school profile -->
+                <h4>About The School : {{ school.user }}</h4>
+                <p>Description:{{ school.description }}</p>
+                <p>We are located in {{ school.location }} County and it's a {{ school.school_type }}</p>
+                <p>Address: {{ school.address }}</p>
+                <p>ou Can Contacts us at {{ school.contact }} or Email us at {{ school.user.email }}</p>
+                <p>Find us at {{ school.website }}</p>
+            </div>
+            <div class="card-footer">
+                {% if has_applied %}
+                <p class="text-center text-bg-success" >YOU HAVE ALREADY APPLIED FOR THIS JOB</p>
+                {% else %}
+                <div class="card-btn text-center">
+                    <!-- Your job detail template -->
+                    <form action="{% url 'view_job' %}?id={{ job.id }}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit"
+                        class="text-bg-success rounded-2 btn">Apply Job</button>                    </form>
+                {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

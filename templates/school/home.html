@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load static %}
+
+
+<!-- School searching section -->
+<div class="section bg-secondary">
+    <div class="container mt-0 pt-5 pb-4 ">
+
+        <h1 class="mb-4">Looking for a Teacher. Get The Best teacher at Any Location</h1>
+        <form action="{% url 'school_home' %}" method="GET">
+            <div class="row">
+                <div class="col-md-3">
+                    <select class="form-select mb-3" aria-label="Select Subject" name="subject">
+                        <option value="" {% if not subject %}selected{% endif %}selected class="text-black">Select Subject</option>
+                        <option value="Mathematics" {% if subject == "Mathematics" %} selected {% endif %}>Mathematics</option>
+                        <option value="English" {% if subject == "English" %} selected {% endif %}>English</option>
+                        <option value="Kiswahili" {% if subject == "Kiswahili" %} selected {% endif %}>Kiswahili</option>
+                        <option value="Physics" {% if subject == "Physics" %} selected {% endif %}>Physics</option>
+                        <option value="Chemistry" {% if subject == "Chemistry" %} selected {% endif %}>Chemistry</option>
+                        <option value="Biology" {% if subject == "Biology" %} selected {% endif %}>Biology</option>
+                        <option value="Geography" {% if subject == "Geography" %} selected {% endif %}>Geography</option>
+                        <option value="History & government" {% if subject == "History & government" %} selected {% endif %}>History & government</option>
+                        <option value="Christian Religion" {% if subject == "Christian Religion" %} selected {% endif %}>Christian Religion</option>
+                        <option value="Islamic Religion" {% if subject == "Islamic Religion" %} selected {% endif %}>Islamic Religion</option>
+                        <option value="Hindu Religion" {% if subject == "Hindu Religion" %} selected {% endif %}>Hindu Religion</option>
+                        <option value="Computer Studies" {% if subject == "Computer Studies" %} selected {% endif %}>Computer Studies</option>
+                        <option value="Agriculture" {% if subject == "Agriculture" %} selected {% endif %}>Agriculture</option>
+                        <option value="Art & Design" {% if subject == "Art & Design" %} selected {% endif %}>Art & Design</option>
+                        <option value="Home Science" {% if subject == "Home Science" %} selected {% endif %}>Home Science</option>
+                        <option value="Business Studies" {% if subject == "Business Studies" %} selected {% endif %}>Business Studies</option>
+                        <option value="Music" {% if subject == "Music" %} selected {% endif %}>Music</option>
+                        <option value="French" {% if subject == "French" %} selected {% endif %}>French</option>
+                        <option value="Germany" {% if subject == "Germany" %} selected {% endif %}>Germany</option>
+                        <option value="Arabic" {% if subject == "Arabic" %} selected {% endif %}>Arabic</option>
+
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select mb-3" name="location">
+                        <option value="" {% if not location %}selected{% endif %}selected class="text-black">Select County</option>
+                        <option value="Mombasa" {% if location == "Mombasa" %} selected {% endif %}>Mombasa</option>
+                        <option value="Kwale" {% if location == "Kwale" %} selected {% endif %}>Kwale</option>
+                        <option value="Kilifi" {% if location == "Kilifi" %} selected {% endif %}>Kilifi</option>
+                        <option value="Tana River" {% if location == "Tana River" %} selected {% endif %}>Tana River</option>
+                        <option value="Garissa" {% if location == "Garissa" %} selected {% endif %}>Garissa</option>
+                        <option value="Wajir" {% if location == "Wajir" %} selected {% endif %}>Wajir</option>
+                        <option value="Mandera" {% if location == "Mandera" %} selected {% endif %}>Mandera</option>
+                        <option value="Marsabit" {% if location == "Marsabit" %} selected {% endif %}>Marsabit</option>
+                        <option value="Isiolo" {% if location == "Isiolo" %} selected {% endif %}>Isiolo</option>
+                        <option value="Meru" {% if location == "Meru" %} selected {% endif %}>Meru</option>
+                        <option value="Tharaka Nithi" {% if location == "Tharaka Nithi" %} selected {% endif %}>Tharaka Nithi</option>
+                        <option value="Embu" {% if location == "Embu" %} selected {% endif %}>Embu</option>
+                        <option value="Kitui" {% if location == "Kitui" %} selected {% endif %}>Kitui</option>
+                        <option value="Machakos" {% if location == "Machakos" %} selected {% endif %}>Machakos</option>
+                        <option value="Makueni" {% if location == "Makueni" %} selected {% endif %}>Makueni</option>
+                        <option value="Nyandarua" {% if location == "Nyandarua" %} selected {% endif %}>Nyandarua</option>
+                        <option value="Kirinyaga" {% if location == "Kirinyaga" %} selected {% endif %}>Kirinyaga</option>
+                        <option value="Murang'a" {% if location == "Murang'a" %} selected {% endif %}>Murang'a</option>
+                        <option value="Kiambu" {% if location == "Kiambu" %} selected {% endif %}>Kiambu</option>
+                        <option value="Turkana" {% if location == "Turkana" %} selected {% endif %}>Turkana</option>
+                        <option value="West Pokot" {% if location == "West Pokot" %} selected {% endif %}>West Pokot</option>
+                        <option value="Samburu" {% if location == "Samburu" %} selected {% endif %}>Samburu</option>
+                        <option value="Trans-Nzoia" {% if location == "Trans-Nzoia" %} selected {% endif %}>Trans-Nzoia</option>
+                        <option value="Uasin-Gishu" {% if location == "Uasin-Gishu" %} selected {% endif %}>Uasin-Gishu</option>
+                        <option value="Elgeiyo-Marakwet" {% if location == "Elgeiyo-Marakwet" %} selected {% endif %}>Elgeiyo-Marakwet</option>
+                        <option value="Nandi" {% if location == "Nandi" %} selected {% endif %}>Nandi</option>
+                        <option value="baringo" {% if location == "baringo" %} selected {% endif %}>baringo</option>
+                        <option value="Laikipia" {% if location == "Laikipia" %} selected {% endif %}>Laikipia</option>
+                        <option value="Nakuru" {% if location == "Nakuru" %} selected {% endif %}>Nakuru</option>
+                        <option value="Narok" {% if location == "Narok" %} selected {% endif %}>Narok</option>
+                        <option value="Kajiado" {% if location == "Kajiado" %} selected {% endif %}>Kajiado</option>
+                        <option value="Kericho" {% if location == "Kericho" %} selected {% endif %}>Kericho</option>
+                        <option value="Bomet" {% if location == "Bomet" %} selected {% endif %}>Bomet</option>
+                        <option value="Kakamega" {% if location == "Kakamega" %} selected {% endif %}>Kakamega</option>
+                        <option value="Vihiga" {% if location == "Vihiga" %} selected {% endif %}>Vihiga</option>
+                        <option value="Bungoma" {% if location == "Bungoma" %} selected {% endif %}>Bungoma</option>
+                        <option value="Busia" {% if location == "Busia" %} selected {% endif %}>Busia</option>
+                        <option value="Siaya" {% if location == "Siaya" %} selected {% endif %}>Siaya</option>
+                        <option value="Kisumu" {% if location == "Kisumu" %} selected {% endif %}>Kisumu</option>
+                        <option value="Homa Bay" {% if location == "Homa Bay" %} selected {% endif %}>Homa Bay</option>
+                        <option value="Migori" {% if location == "Migori" %} selected {% endif %}>Migori</option>
+                        <option value="Kisii" {% if location == "Kisii" %} selected {% endif %}>Kisii</option>
+                        <option value="Nyamira" {% if location == "Nyamira" %} selected {% endif %}>Nyamira</option>
+                        <option value="Nairobi" {% if location == "Nairobi" %} selected {% endif %}>Nairobi</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary btn-block " type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!--  Manage posted jobs in a card -->
+<div class="container pt-3">
+    {% if user.is_school and not user.has_school %}
+    <div class="alert alert-info text-center">
+        You have not yet created a school profile. Please
+        <a href="{% url 'school_profile' %}"> Create a School Profile</a> Here
+    </div>
+    {% elif user.is_school and user.has_school %}
+    <div class="alert alert-info text-center">
+        You can start creating jobs and contact available teachers
+    </div>
+    {% endif %}
+    <div class="card px-sm-4 mb-5 pb-3">
+        <div>
+            <h1 class="text-center mt-3">Manage Posted Jobs</h1>
+        </div>
+        <table class="table table-bordered bg-body-secondary">
+            <thead>
+                <tr class="bg-primary">
+                    <th>Subject</th>
+                    <th>View Job</th>
+                    <th>Update Job</th>
+                    <th>Status</th>
+                    <th>Delete Job</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in posted_jobs %}
+                <tr>
+                    <td>{{ job.subject }}</td>
+                    <td><a href="{% url 'view_posted_jobs' %}?id={{ job.id }}">View job</a></td>
+                    <td><a href="{% url 'update_new_job' %}?id={{ job.id }}">Update job</a></td>
+                    {% if job.is_active %}
+                    <td><a href="{% url 'inactivate_job' %}?id={{ job.id }}"><button
+                                class="btn btn-success btn-sm">Active</button></a></td>
+                    {% else %}
+                    <td><a href="{% url 'activate_job' %}?id={{ job.id }}"><button
+                                class="btn btn-danger btn-sm">Inactive</button></a></td>
+                    {% endif %}
+                    <td><a href="{% url 'delete_job' %}?id={{ job.id }}"><button
+                                class="btn btn-danger btn-sm">Delete</button></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- Available Teachers in a card-->
+<div class="container my-5">
+    <div class="card px-5 pb-5">
+        <h1 class="my-4 text-center">Available Teachers</h1>
+        <div class="row">
+            {% for teacher in page %}
+            <div class="col-md-3 my-3">
+                <div class="card bg-body-secondary text-black px-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p class="m-0">Name: {{ teacher.fname }} {{ teacher.lname }}</p>
+                                <p class="m-0">Subject: {{ teacher.subject }}</p>
+                                <p class="m-0">From: {{ teacher.location }} county</p>
+                            </div>
+                            <div class="col-md-4">
+                                <img src="{{ teacher.image.url }}" class="card-img-top" alt="Profile Image">
+                            </div>
+                        </div>
+                        <div class="card-btn btn-lg text-center mt-1">
+                            <a href="{% url 'view_teacher' %}?teacher_id={{ teacher.user_id }}"><button type="submit"
+                                    class="text-bg-success rounded-2 btn">View & Message the
+                                    teacher</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="mt-5">
+            <nav aria-label="page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item ">
+                        {% if page.has_previous %}
+                        <a class="page-link"
+                            href="{% url 'teacher_home' %}?page={{ page.previous_page_number }}">Previous</a>
+                        {% endif %}
+                    </li>
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">{{ page.number }}</a>
+                    </li>
+                    <li class="page-item">
+                        {% if page.has_next %}
+                        <a class="page-link" href="{% url 'teacher_home' %}?page={{ page.next_page_number }}">Next</a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

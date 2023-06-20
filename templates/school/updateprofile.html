@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+ <!-- Create profile for the school -->
+ <div class="container ">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card my-3 pt-2 bg-body-secondary">
+                <div class="card-body ">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div>
+                            <h3 class="text-center">update profile for the school</h3>
+                        </div>
+                        <div class="my-3">
+                            <select class="form-select mb-3" name="county" required>
+                                <option value="" {% if not location %}selected{% endif %}selected class="text-black">Select county</option>
+                                <option value="Mombasa" {% if location == "Mombasa" %} selected {% endif %}>Mombasa</option>
+                                <option value="Kwale" {% if location == "Kwale" %} selected {% endif %}>Kwale</option>
+                                <option value="Kilifi" {% if location == "Kilifi" %} selected {% endif %}>Kilifi</option>
+                                <option value="Tana River" {% if location == "Tana River" %} selected {% endif %}>Tana River</option>
+                                <option value="Garissa" {% if location == "Garissa" %} selected {% endif %}>Garissa</option>
+                                <option value="Wajir" {% if location == "Wajir" %} selected {% endif %}>Wajir</option>
+                                <option value="Mandera" {% if location == "Mandera" %} selected {% endif %}>Mandera</option>
+                                <option value="Marsabit" {% if location == "Marsabit" %} selected {% endif %}>Marsabit</option>
+                                <option value="Isiolo" {% if location == "Isiolo" %} selected {% endif %}>Isiolo</option>
+                                <option value="Meru" {% if location == "Meru" %} selected {% endif %}>Meru</option>
+                                <option value="Tharaka Nithi" {% if location == "Tharaka Nithi" %} selected {% endif %}>Tharaka Nithi</option>
+                                <option value="Embu" {% if location == "Embu" %} selected {% endif %}>Embu</option>
+                                <option value="Kitui" {% if location == "Kitui" %} selected {% endif %}>Kitui</option>
+                                <option value="Machakos" {% if location == "Machakos" %} selected {% endif %}>Machakos</option>
+                                <option value="Makueni" {% if location == "Makueni" %} selected {% endif %}>Makueni</option>
+                                <option value="Nyandarua" {% if location == "Nyandarua" %} selected {% endif %}>Nyandarua</option>
+                                <option value="Kirinyaga" {% if location == "Kirinyaga" %} selected {% endif %}>Kirinyaga</option>
+                                <option value="Murang'a" {% if location == "Murang'a" %} selected {% endif %}>Murang'a</option>
+                                <option value="Kiambu" {% if location == "Kiambu" %} selected {% endif %}>Kiambu</option>
+                                <option value="Turkana" {% if location == "Turkana" %} selected {% endif %}>Turkana</option>
+                                <option value="West Pokot" {% if location == "West Pokot" %} selected {% endif %}>West Pokot</option>
+                                <option value="Samburu" {% if location == "Samburu" %} selected {% endif %}>Samburu</option>
+                                <option value="Trans-Nzoia" {% if location == "Trans-Nzoia" %} selected {% endif %}>Trans-Nzoia</option>
+                                <option value="Uasin-Gishu" {% if location == "Uasin-Gishu" %} selected {% endif %}>Uasin-Gishu</option>
+                                <option value="Elgeiyo-Marakwet" {% if location == "Elgeiyo-Marakwet" %} selected {% endif %}>Elgeiyo-Marakwet</option>
+                                <option value="Nandi" {% if location == "Nandi" %} selected {% endif %}>Nandi</option>
+                                <option value="baringo" {% if location == "baringo" %} selected {% endif %}>baringo</option>
+                                <option value="Laikipia" {% if location == "Laikipia" %} selected {% endif %}>Laikipia</option>
+                                <option value="Nakuru" {% if location == "Nakuru" %} selected {% endif %}>Nakuru</option>
+                                <option value="Narok" {% if location == "Narok" %} selected {% endif %}>Narok</option>
+                                <option value="Kajiado" {% if location == "Kajiado" %} selected {% endif %}>Kajiado</option>
+                                <option value="Kericho" {% if location == "Kericho" %} selected {% endif %}>Kericho</option>
+                                <option value="Bomet" {% if location == "Bomet" %} selected {% endif %}>Bomet</option>
+                                <option value="Kakamega" {% if location == "Kakamega" %} selected {% endif %}>Kakamega</option>
+                                <option value="Vihiga" {% if location == "Vihiga" %} selected {% endif %}>Vihiga</option>
+                                <option value="Bungoma" {% if location == "Bungoma" %} selected {% endif %}>Bungoma</option>
+                                <option value="Busia" {% if location == "Busia" %} selected {% endif %}>Busia</option>
+                                <option value="Siaya" {% if location == "Siaya" %} selected {% endif %}>Siaya</option>
+                                <option value="Kisumu" {% if location == "Kisumu" %} selected {% endif %}>Kisumu</option>
+                                <option value="Homa Bay" {% if location == "Homa Bay" %} selected {% endif %}>Homa Bay</option>
+                                <option value="Migori" {% if location == "Migori" %} selected {% endif %}>Migori</option>
+                                <option value="Kisii" {% if location == "Kisii" %} selected {% endif %}>Kisii</option>
+                                <option value="Nyamira" {% if location == "Nyamira" %} selected {% endif %}>Nyamira</option>
+                                <option value="Nairobi" {% if location == "Nairobi" %} selected {% endif %}>Nairobi</option>
+                            </select>
+                        </div>
+                        <div class="my-3">
+                            <input type="text" name="address" id="address" placeholder="Enter the school address"
+                                class="form-control" value="{{ school.address }}" required>
+                        </div>
+                        <div class="my-3">
+                            <label>Enter valid phone number e.g +254XXXXXXXXX</label>
+                            <input type="tel" name="contact" id="contact" 
+                                class="form-control" pattern="\+254[0-9]{9}" value="{{ school.contact }}" required>
+                        </div>
+                        
+                        <div class="my-3">
+                            <input type="url" name="website" id="website" placeholder="Enter any of the school websites"
+                                class="form-control" value="{{ school.website }}" required>
+                        </div>
+                        <div class="my-3">
+                            <select class="form-select mb-3" name="schooltype" value="{{ school.schooltype }}" required>
+                                <option selected>Type of School</option>
+                                <option value="National School">National School</option>
+                                <option value="Regional School">Regional School</option>
+                                <option value="Extra-County School">Extra-County School</option>
+                                <option value="County School">County School</option>
+                                <option value="Sub-County School">Sub-County School</option>
+                            </select>
+                        </div>
+                        <div class="my-3">
+                            <textarea name="description" id="description" cols="30" rows="10" class="form-control"
+                                placeholder="Description for the school"  required>{{ school.description }}</textarea>
+                        </div>
+                        <div class="container text-center my-3">
+                            <button class="btn btn-primary ">Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

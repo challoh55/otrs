@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+ <!-- update a new job -->
+ <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card my-3 pt-2 bg-body-secondary">
+                <div class="card-body ">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div>
+                            <h3 class="text-center">Updating a New Job</h3>
+                        </div>
+                        <div class="my-3">
+                            <select class="form-select mb-3" aria-label="Select Subject" name="subject" value="{{ new_job.subject }}">
+                                <option value="" {% if not subject %}selected{% endif %}selected class="text-black">Select Subject</option>
+                                <option value="Mathematics" {% if subject == "Mathematics" %} selected {% endif %}>Mathematics</option>
+                                <option value="English" {% if subject == "English" %} selected {% endif %}>English</option>
+                                <option value="Kiswahili" {% if subject == "Kiswahili" %} selected {% endif %}>Kiswahili</option>
+                                <option value="Physics" {% if subject == "Physics" %} selected {% endif %}>Physics</option>
+                                <option value="Chemistry" {% if subject == "Chemistry" %} selected {% endif %}>Chemistry</option>
+                                <option value="Biology" {% if subject == "Biology" %} selected {% endif %}>Biology</option>
+                                <option value="Geography" {% if subject == "Geography" %} selected {% endif %}>Geography</option>
+                                <option value="History & government" {% if subject == "History & government" %} selected {% endif %}>History & government</option>
+                                <option value="Christian Religion" {% if subject == "Christian Religion" %} selected {% endif %}>Christian Religion</option>
+                                <option value="Islamic Religion" {% if subject == "Islamic Religion" %} selected {% endif %}>Islamic Religion</option>
+                                <option value="Hindu Religion" {% if subject == "Hindu Religion" %} selected {% endif %}>Hindu Religion</option>
+                                <option value="Computer Studies" {% if subject == "Computer Studies" %} selected {% endif %}>Computer Studies</option>
+                                <option value="Agriculture" {% if subject == "Agriculture" %} selected {% endif %}>Agriculture</option>
+                                <option value="Art & Design" {% if subject == "Art & Design" %} selected {% endif %}>Art & Design</option>
+                                <option value="Home Science" {% if subject == "Home Science" %} selected {% endif %}>Home Science</option>
+                                <option value="Business Studies" {% if subject == "Business Studies" %} selected {% endif %}>Business Studies</option>
+                                <option value="Music" {% if subject == "Music" %} selected {% endif %}>Music</option>
+                                <option value="French" {% if subject == "French" %} selected {% endif %}>French</option>
+                                <option value="Germany" {% if subject == "Germany" %} selected {% endif %}>Germany</option>
+                                <option value="Arabic" {% if subject == "Arabic" %} selected {% endif %}>Arabic</option>
+                            </select>
+                        </div>
+                        <div class="my-3">
+                            <input type="number" name="salary" id="salary" placeholder="Enter salary for the job" class="form-control" value="{{ new_job.salary }}">
+                        </div>
+                        <div class="my-3">
+                            <textarea name="description" id="description" cols="30" rows="10" class="form-control"
+                                placeholder="Describe the subject">{{ new_job.description }}</textarea>
+                        </div>
+                        <div class="my-3">
+                            <textarea name="requirements" id="requirements" cols="30" rows="10" class="form-control"
+                                placeholder="Give the requirements for the job">{{ new_job.requirements }}</textarea>
+                        </div>
+                        <div class="my-3">
+                            <textarea name="qualifications" id="qualifications" cols="30" rows="10"
+                                class="form-control"
+                                placeholder="Give the qualifications for the job">{{ new_job.qualifications }}</textarea>
+                        </div>
+                        <div class="container text-center my-3">
+                            <button class="btn btn-primary" type="submit">Update Job</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

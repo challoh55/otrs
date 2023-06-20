@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+ <!-- View posted job details -->
+ <div class="container">
+    <div class="card my-5">
+        <div class="card-body">
+            <div class="card-header m-0">
+                <h2>Vacancy for a {{ job.subject }} Teacher</h1>
+            </div>
+            <br>
+            <div class="card-text">
+                <h4>Job Description</h4>
+                <p>{{job.description}}
+            </div>
+            <div class="card-text">
+                <h4>Job Requirements</h4>
+                <p>{{job.requirements}}</p>
+            </div>
+            <div class="card-text">
+                <h4>Job Qualifications</h4>
+                <p>{{job.qualifications}}</p>
+            </div>
+            <div class="card-text my-5">
+                <h4>Salary: {{ job.salary }} KSH</h4>
+            </div>
+            
+            <div class="card-footer">
+                <div class="card-btn text-center">
+                    <a href="{% url 'update_new_job' %}?id={{ job.id }}"><button class="btn btn-primary btn-lg ">Update Job</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

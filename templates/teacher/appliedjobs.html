@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container my-5">
+    <div class="card p-3 table-responsive">
+        <div>
+            <h1 class="text-center">Applied Jobs</h1>
+        </div>
+        <table class="table table-bordered bg-body-secondary table-responsive">
+            <thead>
+                <tr class="bg-primary">
+                    <th>Subject</th>
+                    <th>School</th>
+                    <th>County</th>
+                    <th>Type of School</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for applied_job in applied_jobs %}
+                <tr>
+                    <td>{{applied_job.newjob.subject}}</td>
+                    <td>{{applied_job.newjob.school.user}}</td>
+                    <td>{{applied_job.newjob.school.location}} County</td>
+                    <td>{{applied_job.newjob.school.school_type }}</td>
+                    <td>Pending</td>
+                    <td><a href="{% url 'view_job' %}?id={{ applied_job.newjob.id }}">View Job</a></td>
+                </tr>
+                {% endfor %}
+               
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}
