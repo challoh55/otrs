@@ -35,7 +35,17 @@
         max-width: 80%;
         display: inline-block;
     }
-
+    .circle-badge {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgb(4, 139, 26);
+      color: rgb(253, 250, 250);
+    }
+    
 </style>
 
 <div class="container ">
@@ -49,16 +59,29 @@
                     <div class="list-group" style="max-height: 607px; overflow-y: auto;">
                         <div class="list-group-item list-group-item-heading bg-primary text-white">Conversation</div>
                         {% for user in user_list %}
-                       
                         {% if request.user.is_school and user.is_teacher %}
-                                <a href="{% url 'chat_room' user.id %}" class="list-group-item list-group-item-action">
-                                   <div> {{ user.teacher.fname }} {{ user.teacher.lname }} </div>
-                                  <div><p></p></div>
-                                </a>
+                        <a href="{% url 'chat_room' user.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <div>{{ user.teacher.fname }} {{ user.teacher.lname }}</div>
+                            <span class="circle-badge">
+                              {% for user_id, count in unread_messages_count.items %}
+                                {% if user_id == user.id %}
+                                  <small>{{ count }}</small>
+                                {% endif %}
+                              {% endfor %}
+                            </span>
+                          </a>
+                          
 
                         {% elif request.user.is_teacher and user.is_school %}
-                        <a href="{% url 'chat_room' user.id %}" class="list-group-item list-group-item-action">
+                        <a href="{% url 'chat_room' user.id %}" class="list-group-item list-group-item-action  d-flex justify-content-between align-items-center">
                             {{ user.username }}
+                            <span class="circle-badge">
+                                {% for user_id, count in unread_messages_count.items %}
+                                  {% if user_id == user.id %}
+                                    <small>{{ count }}</small>
+                                  {% endif %}
+                                {% endfor %}
+                              </span>
 
                         </a>
                         {% endif %}
@@ -145,13 +168,18 @@
     }
     message_send_btn.addEventListener('click', send_message)
 
-    
     $(document).ready(function() {
     setInterval(function() {
         $(".messages-area").load(window.location.href + " .messages-area");
-    }, 500);
+    }, 1000);
     });
- 
+    
+    $(document).ready(function() {
+    setInterval(function() {
+        $(".list-group").load(window.location.href + " .list-group");
+    }, 1000);
+    });
+
 </script>
 
 {% endblock %}

@@ -18,11 +18,13 @@ def chat_room(request, user_id):
 
     user_list = User.objects.all()
     user = request.user
-    unread_messages_count = {}
-    
-    for user in user_list:
-        unread_messages = Message.objects.filter(receiver=user,  seen=False)
-        unread_messages_count = unread_messages.count()
+
+    unread_messages_count = {}  
+    for user2 in user_list:
+        unread_messages = Message.objects.filter(receiver=user, sender=user2, seen=False)
+        unread_messages_count[user2.id] = unread_messages.count()
+        # print(f"Unread messages for user {user2.username}: {unread_messages_count[user2.id]}")
+
     context = {'other_user': other_user, 'messages': messages, 'user_list': user_list, 'unread_messages_count': unread_messages_count}
     return render(request, 'chat/chatroom.html', context)
 
