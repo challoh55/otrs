@@ -4,7 +4,7 @@ from .models import Teacher, Application
 from school.models import Newjob
 from django.core.paginator import Paginator
 from django.contrib import messages
-
+from notification.models import Postedjobs
 
 
 
@@ -118,6 +118,10 @@ def view_job(request):
     user = request.user
     has_applied = Application.objects.filter(teacher=user, newjob=job).exists()
 
+    #once teacher views job is_read field is turned to true hence notification is not dislayed in the teachers notifications anymore
+    subject_notification = Postedjobs.objects.filter(subject=job, recipient=user)
+    subject_notification.update(is_read=True)
+
     if request.method == 'POST':
         if  has_applied:
             messages.warning(request, 'You have already applied for this job')
@@ -125,6 +129,7 @@ def view_job(request):
             application = Application(newjob=job, teacher=user)
             application.save()
             messages.success(request, 'Thank you for applying this job. We will contact you as soon we get your application')
+
 
     context = {'job': job, 'school':school, 'has_applied':has_applied}
     return render(request, 'teacher/viewjob.html', context)

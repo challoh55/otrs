@@ -4,7 +4,8 @@ from .models import School, Newjob
 from teacher.models import Teacher, Application
 from django.core.paginator import Paginator
 from django.db.models import Count
-
+from notification.views import create_notification 
+from django.core.mail import send_mail
 
 
 
@@ -133,6 +134,18 @@ def add_new_job(request):
         new_job = Newjob(school=school, subject=subject, salary=salary,
                          description=description, requirements=requirements, qualifications=qualifications)
         new_job.save()
+
+    # creating an instance of posted job notification as well as sending an email to the matched teacher
+        matched_teachers = Teacher.objects.filter(subject=subject)
+        for teacher in matched_teachers:
+            create_notification(teacher.user, 'A new job in {} has been posted.' .format(subject), subject)
+            email_subject = 'A New Job Notification'
+            school1 = request.user.username
+            email_message = 'A new job has been posted by {}. The subject is {} and the Salary is {}. ' .format(school1, subject, salary)
+            email_message += 'Click here to check more details on the job!!'
+            recipient_email = teacher.user.email
+
+            send_mail(email_subject, email_message, 'vchalloh@gmail.com',    [recipient_email])
 
         return redirect('school_home')
     return render(request, 'school/addnewjob.html')
