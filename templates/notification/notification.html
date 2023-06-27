@@ -6,7 +6,7 @@
 
 <div class="container">
     <div class="card my-5 p-3">
-            
+            {% if request.user.is_teacher %}
             <div class="list-group">
                 <div class="list-group-item list-group-item-action active text-center">
                     Notifications {{ unread_count }}
@@ -22,6 +22,25 @@
                 {% endfor %}
                 
             </div>
+            {% else %}
+
+            <div class="list-group">
+                <div class="list-group-item list-group-item-action active text-center">
+                    Notifications {{ unread_count1 }}
+                </div>
+                {% for notification in application_notification %}
+                <a href="{% url 'applicants_for_subject' subject=notification.application.newjob %}" class="list-group-item list-group-item-action bg-body-secondary">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{notification.message}} has been done for {{ notification.application.newjob }} by {{notification.application.teacher}}</h5>
+                        <small>{{notification.created_at | timesince}} ago</small>
+                    </div>
+                    <p class="mb-1 ">Check it out!!.</p>
+                </a>
+                {% endfor %}
+
+            </div>
+
+            {% endif %}
         
     </div>
 </div>

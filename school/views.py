@@ -4,8 +4,10 @@ from .models import School, Newjob
 from teacher.models import Teacher, Application
 from django.core.paginator import Paginator
 from django.db.models import Count
-from notification.views import create_notification 
+from notification.views import create_postedjob_notification 
 from django.core.mail import send_mail
+from notification.models import ApplicationNotifs
+
 
 
 
@@ -13,7 +15,10 @@ from django.core.mail import send_mail
 # school dashboard , display available teacher from the latest to join
 @login_required(login_url='login-user')
 def school_home(request):
-    username = request.user.username       
+    username = request.user.username  
+
+    application_notification = ApplicationNotifs.objects.filter(recipient=request.user, message__startswith='A new application', is_read=False)
+    unread_count1 = application_notification.count()     
 
     teachers = Teacher.objects.all().order_by('-created_at')
     try:                                                            # Attempt to retrieve the School object associated with the current user
@@ -37,7 +42,7 @@ def school_home(request):
     page_list = request.GET.get('page')
     page = page.get_page(page_list)
 
-    context = {'username': username, 'page': page, 'school': school, 'posted_jobs': posted_jobs, 'search_location': search_location, 'search_subject': search_subject}
+    context = {'unread_count1':unread_count1, 'username': username, 'page': page, 'school': school, 'posted_jobs': posted_jobs, 'search_location': search_location, 'search_subject': search_subject}
     return render(request, 'school/home.html', context)
 
    
@@ -46,6 +51,11 @@ def school_home(request):
 # creating a school profile for the school
 @login_required(login_url='login-user')
 def school_profile(request):
+    username = request.user.username 
+
+    application_notification = ApplicationNotifs.objects.filter(recipient=request.user, message__startswith='A new application', is_read=False).order_by('-created_at')
+    unread_count1 = application_notification.count()
+
     if request.user.is_school:
         if request.method == 'POST':
             user = request.user
@@ -66,7 +76,7 @@ def school_profile(request):
 
             return redirect('school_home')
 
-        return render(request, 'school/schoolprofile.html')
+        return render(request, 'school/schoolprofile.html', {'unread_count1':unread_count1, 'username': username})
 
 
 
@@ -74,6 +84,11 @@ def school_profile(request):
 # updating the school profile 
 @login_required(login_url='login-user')
 def update_profile(request):
+    username = request.user.username  
+
+    application_notification = ApplicationNotifs.objects.filter(recipient=request.user, message__startswith='A new application', is_read=False).order_by('-created_at')
+    unread_count1 = application_notification.count()
+
     school = request.user.school
 
     if request.method == 'POST':
@@ -87,7 +102,7 @@ def update_profile(request):
         school.save()
         return redirect('school_home')
 
-    return render(request, 'school/updateprofile.html', {'school': school})
+    return render(request, 'school/updateprofile.html', {'unread_count1':unread_count1, 'school': school, 'username': username})
 
 
 
@@ -96,10 +111,15 @@ def update_profile(request):
  # viewing teachers details by the school
 @login_required(login_url='login-user')
 def view_teacher(request):
+    username = request.user.username 
+
+    application_notification = ApplicationNotifs.objects.filter(recipient=request.user, message__startswith='A new application', is_read=False).order_by('-created_at')
+    unread_count1 = application_notification.count()
+
     teacher_id = request.GET.get('teacher_id')
     teacher = get_object_or_404(Teacher, user_id=teacher_id)
 
-    context = {'teacher': teacher}
+    context = {'unread_count1':unread_count1, 'teacher': teacher, 'username': username}
     return render(request, 'school/viewteacher.html', context)
 
 
@@ -108,10 +128,15 @@ def view_teacher(request):
 # view posted job by the school due to job id
 @login_required(login_url='login-user')
 def view_posted_jobs(request):
+    username = request.user.username  
+
+    application_notification = ApplicationNotifs.objects.filter(recipient=request.user, message__startswith='A new application', is_read=False).order_by('-created_at')
+    unread_count1 = application_notification.count()
+
     job_id = request.GET.get('id')
     job = get_object_or_404(Newjob, id=job_id)
 
-    context = {'job': job}
+    context = {'unread_count1':unread_count1, 'job': job, 'username': username}
     return render(request, 'school/viewpostedjobs.html', context)
 
 
@@ -119,6 +144,10 @@ def view_posted_jobs(request):
 # adding a new job
 @login_required(login_url='login-user')
 def add_new_job(request):
+    username = request.user.username
+
+    application_notification = ApplicationNotifs.objects.filter(recipient=request.user, message__startswith='A new application', is_read=False).order_by('-created_at')
+    unread_count1 = application_notification.count()  
 
     if request.method == 'POST':
         user = request.user            # Retrieve the school user object
@@ -138,7 +167,7 @@ def add_new_job(request):
     # creating an instance of posted job notification as well as sending an email to the matched teacher
         matched_teachers = Teacher.objects.filter(subject=subject)
         for teacher in matched_teachers:
-            create_notification(teacher.user, 'A new job in {} has been posted.' .format(subject), subject)
+            create_postedjob_notification(teacher.user, 'A new job in {} has been posted.' .format(subject), subject)
             email_subject = 'A New Job Notification'
             school1 = request.user.username
             email_message = 'A new job has been posted by {}. The subject is {} and the Salary is {}. ' .format(school1, subject, salary)
@@ -148,12 +177,17 @@ def add_new_job(request):
             send_mail(email_subject, email_message, 'vchalloh@gmail.com',    [recipient_email])
 
         return redirect('school_home')
-    return render(request, 'school/addnewjob.html')
+    return render(request, 'school/addnewjob.html', {'unread_count1':unread_count1, 'username': username})
 
 
 # update new job 
 @login_required(login_url='login-user')
 def update_new_job(request):
+    username = request.user.username 
+
+    application_notification = ApplicationNotifs.objects.filter(recipient=request.user, message__startswith='A new application', is_read=False).order_by('-created_at')
+    unread_count1 = application_notification.count() 
+
     job_id = request.GET.get('id')
     new_job = Newjob.objects.get(id=job_id)
 
@@ -166,7 +200,7 @@ def update_new_job(request):
         new_job.save()
         return redirect('school_home')
 
-    return render(request, 'school/updatenewjob.html', {'new_job': new_job})
+    return render(request, 'school/updatenewjob.html', {'unread_count1':unread_count1, 'new_job': new_job, 'username': username})
 
 
 
@@ -208,10 +242,15 @@ def inactivate_job(request):
 # all applicants for the school
 @login_required(login_url='login-user') 
 def all_applicants(request):
+    username = request.user.username 
+
+    application_notification = ApplicationNotifs.objects.filter(recipient=request.user, message__startswith='A new application', is_read=False).order_by('-created_at')
+    unread_count1 = application_notification.count()
+
     school = request.user.school
     applications = Application.objects.filter(newjob__school=school).values('newjob__subject', 'newjob__school__location', 'newjob__salary').annotate(count=Count('newjob__subject'))
 
-    context = {'applications': applications}
+    context = {'unread_count1':unread_count1, 'applications': applications, 'username': username}
     return render(request, 'school/allapplicants.html', context)
 
 
@@ -219,10 +258,19 @@ def all_applicants(request):
 @login_required(login_url='login-user') 
 # applicants for a specific subject
 def applicants_for_subject(request, subject):
+    username = request.user.username  
+
+    application_notification = ApplicationNotifs.objects.filter(recipient=request.user, message__startswith='A new application', is_read=False).order_by('-created_at')
+    unread_count1 = application_notification.count()
+
     school = request.user.school
     applications = Application.objects.filter(newjob__school=school, newjob__subject=subject).order_by('-application_date')
 
-    context = {'applications': applications, 'subject': subject}
+    #turns application for a particular subject read once once they click the notification
+    application_notification = ApplicationNotifs.objects.filter(application__newjob__subject=subject, recipient=request.user)
+    application_notification.update(is_read=True)
+
+    context = {'unread_count1':unread_count1,'applications': applications, 'subject': subject, 'username': username}
     return render(request, 'school/applicantsforsubject.html', context)
 
 

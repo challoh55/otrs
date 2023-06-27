@@ -1,4 +1,4 @@
-from teacher.models import Application
+from notification.models import ApplicationNotifs, Postedjobs
 from django.db.models import Q
 import json
 from django.shortcuts import render, get_object_or_404
@@ -9,6 +9,15 @@ from .models import User, Message
 
 @login_required
 def chat_room(request, user_id):
+    username = request.user.username
+
+    application_notification = ApplicationNotifs.objects.filter(recipient=request.user, message__startswith='A new application', is_read=False)
+    unread_count1 = application_notification.count() 
+
+    subject_notification = Postedjobs.objects.filter(recipient=request.user, message__startswith='A new job in', is_read=False).order_by('-created_at')
+    unread_count = subject_notification.count()    
+
+
     # gets other user to chat with
     other_user = get_object_or_404(User, id=user_id)
     messages = Message.objects.filter(Q(receiver=request.user, sender=other_user)).order_by('date_created')
@@ -25,7 +34,7 @@ def chat_room(request, user_id):
         unread_messages_count[user2.id] = unread_messages.count()
         # print(f"Unread messages for user {user2.username}: {unread_messages_count[user2.id]}")
 
-    context = {'other_user': other_user, 'messages': messages, 'user_list': user_list, 'unread_messages_count': unread_messages_count}
+    context = {'unread_count':unread_count, 'unread_count1':unread_count1, 'username':username, 'other_user': other_user, 'messages': messages, 'user_list': user_list, 'unread_messages_count': unread_messages_count}
     return render(request, 'chat/chatroom.html', context)
 
 

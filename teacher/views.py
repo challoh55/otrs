@@ -5,6 +5,8 @@ from school.models import Newjob
 from django.core.paginator import Paginator
 from django.contrib import messages
 from notification.models import Postedjobs
+from notification.views import create_application_notification
+from django.core.mail import send_mail
 
 
 
@@ -13,7 +15,10 @@ from notification.models import Postedjobs
 @login_required(login_url='login-user') 
 def teacher_home(request):
     username = request.user.username
-    
+
+    subject_notification = Postedjobs.objects.filter(recipient=request.user, message__startswith='A new job in', is_read=False).order_by('-created_at')
+    unread_count = subject_notification.count()
+
     # filters jobs based on subject, location and school_type
     jobs = Newjob.objects.all().select_related('school').order_by('-created_at')
     
@@ -33,7 +38,7 @@ def teacher_home(request):
     page_list = request.GET.get('page')
     page = page.get_page(page_list)
 
-    context={'username':username, 'page':page, 'search_subject':search_subject, 'search_location':search_location, 'search_school_type':search_school_type}
+    context={'unread_count':unread_count, 'username':username, 'page':page, 'search_subject':search_subject, 'search_location':search_location, 'search_school_type':search_school_type}
     return render(request, 'teacher/home.html', context)
 
 
@@ -42,6 +47,11 @@ def teacher_home(request):
 # creatting a resume for teacher
 @login_required(login_url='login-user')
 def Resume(request):
+    username = request.user.username
+
+    subject_notification = Postedjobs.objects.filter(recipient=request.user, message__startswith='A new job in', is_read=False).order_by('-created_at')
+    unread_count = subject_notification.count()
+
     if request.user.is_authenticated:
         if request.method == 'POST':
             user = request.user
@@ -70,7 +80,7 @@ def Resume(request):
 
             return redirect('teacher_home')
 
-        return render(request, 'teacher/teacherresume.html')
+        return render(request, 'teacher/teacherresume.html', {'unread_count':unread_count, 'username':username,})
     return redirect('login-user')
 
 
@@ -78,6 +88,11 @@ def Resume(request):
 # updating teacher resume
 @login_required(login_url='login-user')
 def update_resume(request):
+    username = request.user.username
+
+    subject_notification = Postedjobs.objects.filter(recipient=request.user, message__startswith='A new job in', is_read=False).order_by('-created_at')
+    unread_count = subject_notification.count()
+
     teacher = request.user.teacher
 
     if request.method == 'POST':
@@ -100,7 +115,7 @@ def update_resume(request):
         teacher.save()
         return redirect('teacher_home')
 
-    return render(request, 'teacher/updateresume.html', {'teacher': teacher})
+    return render(request, 'teacher/updateresume.html', {'unread_count':unread_count, 'teacher': teacher, 'username':username,})
 
 
 
@@ -110,6 +125,11 @@ def update_resume(request):
 # teachers viewing jobs and school and applying for the job
 @login_required(login_url='login-user')     # checks if the user is authenticated if not redirects them to login page
 def view_job(request):
+    username = request.user.username
+
+    subject_notification = Postedjobs.objects.filter(recipient=request.user, message__startswith='A new job in', is_read=False).order_by('-created_at')
+    unread_count = subject_notification.count()
+
     job_id = request.GET.get('id')
     job = get_object_or_404(Newjob, id=job_id)
     school = job.school
@@ -128,10 +148,21 @@ def view_job(request):
         else:
             application = Application(newjob=job, teacher=user)
             application.save()
+
+            create_application_notification(school.user, 'A new application', application.id)
+            email_subject = 'A New Application'
+            teacher1 = request.user.username
+            email_message = 'A new Application has been done for {} by {} ' .format(job, teacher1)
+            email_message += 'Click here to view the application!!'
+            recipient_email = school.user.email
+
+            send_mail(email_subject, email_message, 'vchalloh@gmail.com',    [recipient_email])
+
+
             messages.success(request, 'Thank you for applying this job. We will contact you as soon we get your application')
 
 
-    context = {'job': job, 'school':school, 'has_applied':has_applied}
+    context = {'unread_count':unread_count, 'job': job, 'school':school, 'has_applied':has_applied, 'username':username,}
     return render(request, 'teacher/viewjob.html', context)
 
 
@@ -143,7 +174,12 @@ def view_job(request):
 # applied jobs 
 @login_required(login_url='login-user') 
 def applied_jobs(request):
+    username = request.user.username
+
+    subject_notification = Postedjobs.objects.filter(recipient=request.user, message__startswith='A new job in', is_read=False).order_by('-created_at')
+    unread_count = subject_notification.count()
+
     user = request.user
     applied_jobs = Application.objects.filter(teacher=user).select_related('newjob', 'teacher').order_by('-application_date')
-    context = {'applied_jobs':applied_jobs}
+    context = {'unread_count':unread_count, 'applied_jobs':applied_jobs, 'username':username,}
     return render(request, 'teacher/appliedjobs.html', context)
