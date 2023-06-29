@@ -18,7 +18,7 @@ class Teacher(models.Model):
     image = models.ImageField(upload_to='profile_pics')
     resume = models.FileField(upload_to='resumes')
     GENDER_CHOICES = (('M', 'Male'), ('F', 'Female'), ('O', 'Other'),)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=100, choices=GENDER_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -31,6 +31,8 @@ class Application(models.Model):
     teacher = models.ForeignKey(User, on_delete=models.CASCADE)
     newjob = models.ForeignKey(Newjob, on_delete=models.CASCADE)
     application_date = models.DateTimeField(auto_now_add=True)
+    STATUS_CHOICES = (('Pending', 'Pending'), ('Accepted', 'Accepted'), ('Rejected', 'Rejected'))
+    status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Pending', null=True)
 
 
     def __str__(self):

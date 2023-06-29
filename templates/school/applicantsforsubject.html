@@ -16,7 +16,7 @@
                     <th>Application Date</th>
                     <th>Action</th>
                     <!-- <th>Action</th> -->
-                    <th>Status</th>
+                    <th>Update Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,13 +28,19 @@
                         <td>{{ application.application_date }}</td>
                         <td><a href="{% url 'view_teacher' %}?teacher_id={{ application.teacher.teacher.user_id }}">View Teacher</a></td>
                         <!-- <td><a href="{{ application.teacher.teacher.resume.url }}">Download Resume</a></td> -->
-                        <td><select class="form-select mb-3">
-                            <option selected>Update Status</option>
-                            <option value="school1">Pending</option>
-                            <option value="school2">Received</option>
-                            <option value="school3">Accepted</option>
-                            <option value="school4">Rejected</option>
-                        </select></td>
+                        <td>
+                            <form action="#" method="POST">
+                                <select class="form-select mb-1" name="application_status">
+                                    <option value="" {% if not application_status %}selected{% endif %}selected class="text-black">Update Status</option>
+                                    <option value="Pending" {% if application_status == "Pending" %} selected {% endif %}>Pending</option>
+                                    <option value="Accepted" {% if application_status == "Accepted" %} selected {% endif %}>Accept</option>
+                                    <option value="Rejected" {% if application_status == "Rejected" %} selected {% endif %}>Reject</option>
+                                </select>
+                                <div class="text-center">
+                                    <button class="btn btn-primary btn-sm" type="submit">Update</button>
+                                </div>
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

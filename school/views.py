@@ -7,6 +7,7 @@ from django.db.models import Count
 from notification.views import create_postedjob_notification 
 from django.core.mail import send_mail
 from notification.models import ApplicationNotifs
+from django.contrib import messages
 
 
 
@@ -259,12 +260,19 @@ def all_applicants(request):
 # applicants for a specific subject
 def applicants_for_subject(request, subject):
     username = request.user.username  
+    
 
     application_notification = ApplicationNotifs.objects.filter(recipient=request.user, message__startswith='A new application', is_read=False).order_by('-created_at')
     unread_count1 = application_notification.count()
 
     school = request.user.school
+
+    application_status = request.POST.get('application_status')
+
     applications = Application.objects.filter(newjob__school=school, newjob__subject=subject).order_by('-application_date')
+    for application in applications:
+        application.status = application_status
+        application.save()    
 
     #turns application for a particular subject read once once they click the notification
     application_notification = ApplicationNotifs.objects.filter(application__newjob__subject=subject, recipient=request.user)

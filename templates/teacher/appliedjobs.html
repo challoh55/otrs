@@ -25,7 +25,15 @@
                     <td>{{applied_job.newjob.school.user}}</td>
                     <td>{{applied_job.newjob.school.location}} County</td>
                     <td>{{applied_job.newjob.school.school_type }}</td>
-                    <td>Pending</td>
+                    <td>
+                        {% if applied_job.status == 'Pending' %}
+                        <div class="btn btn-primary">Pending</div>
+                        {% elif applied_job.status == 'Accepted' %}
+                        <div class="btn btn-success">Accepted</div>
+                        {% elif applied_job.status == 'Rejected' %}
+                        <div class="btn btn-danger">Rejected</div>
+                        {% endif %}
+                    </td>
                     <td><a href="{% url 'view_job' %}?id={{ applied_job.newjob.id }}">View Job</a></td>
                 </tr>
                 {% endfor %}

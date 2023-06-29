@@ -6,4 +6,5 @@ class CustomUserAdmin(UserAdmin):
     list_display = ['username', 'email', 'is_teacher', 'is_school', 'is_staff', 'password']
     search_fields = ['username', 'email']
 
+    
 admin.site.register(User, CustomUserAdmin)
