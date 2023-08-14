@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block title %} 
+Teacher
+{% endblock %}
+
 {% block content %}
 
 <!-- View Job & About the Job-->
@@ -44,7 +48,9 @@
             </div>
             <div class="card-footer">
                 {% if has_applied %}
-                <p class="text-center text-bg-success" >YOU HAVE ALREADY APPLIED FOR THIS JOB</p>
+                <div class="alert alert-danger text-center" role="alert">
+                   <h3>YOU HAVE ALREADY APPLIED FOR THIS JOB</h3>
+                  </div>
                 {% else %}
                 <div class="card-btn text-center">
                     <!-- Your job detail template -->

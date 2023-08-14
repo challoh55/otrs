@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <select class="form-select mb-3" aria-label="Select Subject" name="subject">
-                        <option value="" {% if not subject %}selected{% endif %}selected class="text-black">Select Subject</option>
+                        <option value="{{search_subject}}" {% if not subject %}selected{% endif %}selected class="text-black">Select Subject</option>
                         <option value="Mathematics" {% if subject == "Mathematics" %} selected {% endif %}>Mathematics</option>
                         <option value="English" {% if subject == "English" %} selected {% endif %}>English</option>
                         <option value="Kiswahili" {% if subject == "Kiswahili" %} selected {% endif %}>Kiswahili</option>
@@ -107,7 +107,10 @@
         </form>
     </div>
 </div>
+{% for teacher in teachers_created_this_month %}
+{{teacher}}
 
+{% endfor %}
 <!-- Available Open Job Positions in a card-->
 <div class="container my-5">
     {% if user.is_teacher and not user.has_resume %}

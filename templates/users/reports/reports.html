@@ -1,0 +1,160 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="container mt-4">
+    <div class="row ">
+        <div class="my-2">
+            <h3>Select month you want to view reports for</h3>
+        </div>
+        <div class="col-md-3 me-0">
+            
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="month" name="date" value="{{ date }}" class="form-control">
+                <!-- Your other form fields -->
+               <button type="submit" class="btn btn-primary my-2">View Reports</button>
+
+              </form>
+        </div>
+        <div class="col-md-3 ms-auto">
+            <form action="{% url 'create_pdf' %}" method="POST">
+                {% csrf_token %}
+                <input type="month" name="date" value="{{ date }}" class="form-control" hidden>
+                <!-- Your other form fields -->
+               <button type="submit" class="btn btn-light">Generate Report</button>
+              </form>
+    
+        </div>
+    </div> 
+</div>
+
+<!-- teachers joined in july -->
+<div class="container">
+    <div class="card px-sm-4 my-3 pb-3 table-responsive">
+        <div>
+            <h1 class="text-center mt-3">Teachers joined in {{month2}} {{year1}}</h1>
+        </div>
+        <table class="table table-bordered bg-body-secondary ">
+            <thead>
+                <tr class="bg-primary">
+                    <th>Full name</th>
+                    <th>Phone number</th>
+                    <th>Subject</th>
+                    <th>Location</th>
+                    <th>Id number</th>
+                    <th>DOB</th>
+                    <th>Gender</th>
+                    <th>Data Joined</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for teacher in teachers_created_this_month %}
+                <tr>
+                    <td>{{teacher.fname}} {{teacher.lname}}</td>
+                    <th>{{teacher.phonenumber}}</th>
+                    <td>{{teacher.subject}}</td>
+                    <td>{{teacher.location}}</td>
+                    <td>{{teacher.idnumber}}</td>
+                    <td>{{teacher.dob}}</td>
+                    <td>{{teacher.gender}}</td>
+                    <td>{{teacher.created_at | date}}</td>
+                    
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+
+<!-- jobs in july -->
+<div class="container">
+    <div class="card px-sm-4 my-5 pb-3">
+        <div>
+            <h1 class="text-center mt-3">Jobs posted in {{month2}} {{year1}}</h1>
+        </div>
+        <table class="table table-bordered bg-body-secondary ">
+            <thead>
+                <tr class="bg-primary">
+                    <th>subject</th>
+                    <th>School</th>
+                    <th>Date Posted</th>
+                    <th>Salary</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs_created_month %}
+                <tr>
+                    <td>{{job}}</td>
+                    <td>{{job.school}}</td>
+                    <td>{{job.created_at | date}}</td>
+                    <td>{{job.salary}}</td>
+                    
+                   
+                    
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+
+<div class="container">
+    <div class="card px-sm-4 my-5 pb-3">
+        <div>
+            <h1 class="text-center mt-3">applications in {{month2}} {{year1}}</h1>
+        </div>
+        <table class="table table-bordered bg-body-secondary ">
+            <thead>
+                <tr class="bg-primary">
+                    <th>subject</th>
+                    <th>School</th>
+                    <th>Applications</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs_created_month %}
+                <tr>
+                    <td>{{job}}</td>
+                    <td>{{job.school}}</td>
+                    <td>
+                        <table class="table table-bordered bg-body-secondary text-small">
+                            <thead>
+                                <tr>
+                                    <th>Teacher</th>
+                                    <th>Application Date</th>
+                                    <th>status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for application in job.application_set.all %}
+                                <tr>
+                                    <td>{{application.teacher.teacher.fname}} {{application.teacher.teacher.lname}}</td>
+                                    <td>{{application.application_date|date}}</td>
+                                    <td>{{application.status}}</td>                            
+                                </tr>
+                                
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+
+
+
+
+{%  endblock %}

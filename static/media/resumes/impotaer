@@ -1,0 +1,128 @@
+<script>
+        new window.IntaSend({
+          publicAPIKey: "ISPubKey_test_6cdb65b0-a6df-45db-bc60-22fa01987909",
+          live: false // set to true when going live
+        })
+          .on("COMPLETE", (results) => console.log("Do something on success", results))
+          .on("FAILED", (results) => {
+            var userId = "{{ user.id }}";
+
+            fetch('update-user-paid-status', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ id: userId }),
+            })
+              .then(response =>{
+                console.log(response)        
+                  } )
+              .then(data => {
+                console.log(data);
+                if (data.status === 'success') {
+                  var user = JSON.parse('{{ user | escapejs }}');
+                  if (user.is_teacher) {
+                    window.location.href = "{% url 'teacher_home' %}";
+                  }
+                }
+              })
+              .catch(error => {
+                console.log('An error occurred:', error);
+              });
+      
+            console.log("Do something on failure", results);
+          })
+          .on("IN-PROGRESS", (results) => console.log("Payment in progress status", results));
+      </script>
+
+
+
+
+
+    <script src="https://unpkg.com/intasend-inlinejs-sdk@3.0.4/build/intasend-inline.js"></script>
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-md navbar-dark text-bg-dark fs-4 sticky-top">
+        <div class="container ">
+            <h3 class="nav-item mx-3">Hello {{username}}</h3>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item mx-3">
+                        <button class="intaSendPayButton bg-primary rounded-2 border-0 p-1" data-amount="10" data-currency="KES">Pay Now</button>
+                    </li>
+                    <li class="nav-item mx-3">
+                        <a class="nav-link" href="{%  url 'logout-user' %}">logout</a>
+                    </li>       
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card bg-body-secondary my-3 pt-2">
+              <div class="card-body ">
+                <h2 class="text-center">Please pay inorder to continue to the main page </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+from intasend import APIService
+
+
+
+
+token = "ISSecretKey_test_51fcb535-e653-46aa-8484-61b089b30bfc"
+publishable_key = "ISPubKey_test_6cdb65b0-a6df-45db-bc60-22fa01987909"
+service = APIService(token=token, publishable_key=publishable_key, test=True)
+
+
+
+
+
+
+
+
+
+def pay(request):
+
+    response = service.collect.mpesa_stk_push(phone_number= '254703156845', email='vchalloh@gmail.com', amount=1, narrative='purchase')
+
+    print(response)
+    invoice_id = response['invoice']['invoice_id']
+    phone_number = response['customer']['phone_number']
+
+    print('invoice_id:', invoice_id)
+    print('phone_number:', phone_number)
+
+
+    return render(request, 'users/pay.html')
+
+
+
+
+
+
+
+
+
+

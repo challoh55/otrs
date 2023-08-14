@@ -2,13 +2,15 @@
 
 {% block content %}
 
+
+
 <!-- login page for both teachers and schools -->
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-6">
       {% if messages %}
       {% for message in messages %}
-      <div class="alert alert-primary my-3" role="alert">
+      <div class="alert alert-primary my-3 text-center" role="alert">
         {{ message }}
       </div>
       {% endfor %}
@@ -27,9 +29,11 @@
               <input type="password" name="password" id="password" placeholder="Enter your password"
                 class="form-control">
             </div>
+
             <div class="text-center">
-              <p><a href="#">Forgot password</a></p>
+              <p><a href="{% url 'reset_password' %}">Forgot password</a></p>
             </div>
+
             <div class="row">
               <div class="col-6">
                 <div class="text-center mt-0">
@@ -46,10 +50,14 @@
               <button class="btn btn-primary" type="submit">Login</button>
             </div>
           </form>
+
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
+
 
 {% endblock %}

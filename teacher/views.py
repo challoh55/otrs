@@ -1,5 +1,9 @@
+import json
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
+
+from users.models import User
 from .models import Teacher, Application
 from school.models import Newjob
 from django.core.paginator import Paginator
@@ -7,7 +11,7 @@ from django.contrib import messages
 from notification.models import Postedjobs
 from notification.views import create_application_notification
 from django.core.mail import send_mail
-
+from xhtml2pdf import pisa
 
 
 
@@ -37,6 +41,7 @@ def teacher_home(request):
     page = Paginator(jobs, 60)
     page_list = request.GET.get('page')
     page = page.get_page(page_list)
+
 
     context={'unread_count':unread_count, 'username':username, 'page':page, 'search_subject':search_subject, 'search_location':search_location, 'search_school_type':search_school_type}
     return render(request, 'teacher/home.html', context)
@@ -183,3 +188,29 @@ def applied_jobs(request):
     applied_jobs = Application.objects.filter(teacher=user).select_related('newjob', 'teacher').order_by('-application_date')
     context = {'unread_count':unread_count, 'applied_jobs':applied_jobs, 'username':username,}
     return render(request, 'teacher/appliedjobs.html', context)
+
+
+
+
+
+@login_required(login_url='login-user') 
+def delete_application(request):
+    application_id = request.GET.get('id')
+    application = get_object_or_404(Application, id=application_id)
+    application.delete()
+    return redirect('applied_jobs')
+
+def update_user_paid_status(request):
+    bd=request.body
+    data = json.loads(bd)
+    user_id = data['id']
+    print(user_id)
+    
+    user = User.objects.get(id=user_id)
+    print(user)
+    user.has_paid = True
+    user.save()
+    return JsonResponse({'status': 'success'})
+
+
+

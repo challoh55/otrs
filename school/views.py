@@ -1,5 +1,9 @@
+import json
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+
+from users.models import User
 from .models import School, Newjob
 from teacher.models import Teacher, Application
 from django.core.paginator import Paginator
@@ -7,8 +11,6 @@ from django.db.models import Count
 from notification.views import create_postedjob_notification 
 from django.core.mail import send_mail
 from notification.models import ApplicationNotifs
-from django.contrib import messages
-
 
 
 
@@ -43,7 +45,9 @@ def school_home(request):
     page_list = request.GET.get('page')
     page = page.get_page(page_list)
 
-    context = {'unread_count1':unread_count1, 'username': username, 'page': page, 'school': school, 'posted_jobs': posted_jobs, 'search_location': search_location, 'search_subject': search_subject}
+    
+
+    context = { 'unread_count1':unread_count1, 'username': username, 'page': page, 'school': school, 'posted_jobs': posted_jobs, 'search_location': search_location, 'search_subject': search_subject}
     return render(request, 'school/home.html', context)
 
    
@@ -148,7 +152,8 @@ def add_new_job(request):
     username = request.user.username
 
     application_notification = ApplicationNotifs.objects.filter(recipient=request.user, message__startswith='A new application', is_read=False).order_by('-created_at')
-    unread_count1 = application_notification.count()  
+    unread_count1 = application_notification.count() 
+    print(application_notification) 
 
     if request.method == 'POST':
         user = request.user            # Retrieve the school user object
@@ -165,7 +170,7 @@ def add_new_job(request):
                          description=description, requirements=requirements, qualifications=qualifications)
         new_job.save()
 
-    # creating an instance of posted job notification as well as sending an email to the matched teacher
+         # creating an instance of posted job notification as well as sending an email to the matched teacher
         matched_teachers = Teacher.objects.filter(subject=subject)
         for teacher in matched_teachers:
             create_postedjob_notification(teacher.user, 'A new job in {} has been posted.' .format(subject), subject)
@@ -283,8 +288,16 @@ def applicants_for_subject(request, subject):
 
 
 
-
-
+def update_user_paid_status(request):
+    bd=request.body
+    data = json.loads(bd)
+    user_id = data['id']
+    print(user_id)
+    
+    user = User.objects.get(id=user_id)
+    user.has_paid = True
+    user.save()
+    return JsonResponse({'status': 'success'})
 
 
 

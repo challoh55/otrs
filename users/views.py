@@ -1,11 +1,27 @@
-from django.shortcuts import render, redirect
+import json
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import User
 from school.models import Newjob
 from django.core.paginator import Paginator
+from datetime import datetime
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
+import calendar
 from teacher.models import Application
-from django.db.models import Count
+
+from django.http import HttpResponse, JsonResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from intasend import APIService
+
+
+
+
+token = "ISSecretKey_test_51fcb535-e653-46aa-8484-61b089b30bfc"
+publishable_key = "ISPubKey_test_6cdb65b0-a6df-45db-bc60-22fa01987909"
+service = APIService(token=token, publishable_key=publishable_key, test=True)
 
 
 
@@ -103,7 +119,7 @@ def RegisterSchool(request):
         messages.success(
             request, 'Your account has been created successfully. Please log in.')
         return redirect('login-user')
-
+    
     return render(request, 'users/registerschool.html')
 
 
@@ -119,15 +135,17 @@ def Login(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user)
-            if user.is_teacher:
-                return redirect('teacher_home')
-            elif user.is_school:
+                login(request, user)
+                if user.is_teacher:
+                    return redirect('teacher_home')
+                elif user.is_school:
                     return redirect('school_home')
+            
+    
         else:
             messages.warning(
-                request, 'Invalid Credentials. Please enter the correct username and password')
-
+                request, 'Invalid Credentials. Please enter the correct username and password')          
+    
     return render(request, 'users/login.html')
 
 
@@ -137,6 +155,135 @@ def Login(request):
 def Logout(request):
     logout(request)
     return redirect('home-page')
+
+
+
+#delete user
+def delete_user(request):
+    user_id = request.GET.get('id')
+    user1 = get_object_or_404(User, id=user_id)
+    user1.delete()
+    return redirect('home-page')
+
+    
+#view monthly reports
+@login_required
+@staff_member_required
+def reports(request):
+
+    if request.method == 'POST':
+        date = request.POST.get('date')
+    else:
+        date = datetime.now().strftime('%Y-%m')    # Set the default value to the current month
+        
+    month1 = int(date.split('-')[1])
+    year1 = int(date.split('-')[0])
+
+    month2 = calendar.month_name[month1]
+
+
+    teacher1 = User.objects.filter(is_teacher=True)
+    teachers_created_this_month = []
+    for teach in teacher1:  
+        if teach.created_at.date().month == month1 and teach.created_at.date().year == year1:
+            teachers_created_this_month.append(teach.teacher)
+            
+            
+    job1 = Newjob.objects.filter()
+    jobs_created_month = []
+    for job2 in job1:
+        if job2.created_at.date().month == month1 and job2.created_at.date().year == year1:
+            jobs_created_month.append(job2)
+
+        
+    month_app = []
+    applications = Application.objects.all()
+    for app in applications:
+        if app.application_date.date().month == month1 and app.application_date.date().year == year1 :
+            month_app.append(app)
+
+
+    context ={'teachers_created_this_month':teachers_created_this_month, 'jobs_created_month':jobs_created_month,  'month2':month2, 'year1': year1, 'month_app':month_app, 'date':date}
+    return render(request, 'users/reports/reports.html', context)
+
+
+
+# generate pdf report
+@login_required
+@staff_member_required
+def pdf_report_create(request):
+    if request.method == 'POST':
+        date = request.POST.get('date')
+    else:
+        date = datetime.now().strftime('%Y-%m')    # Set the default value to the current month
+        
+    month1 = int(date.split('-')[1])
+    year1 = int(date.split('-')[0])
+
+    month2 = calendar.month_name[month1]
+
+
+    teacher1 = User.objects.filter(is_teacher=True)
+    teachers_created_this_month = []
+    for teach in teacher1:  
+        if teach.created_at.date().month == month1 and teach.created_at.date().year == year1:
+            teachers_created_this_month.append(teach.teacher)
+            
+            
+    job1 = Newjob.objects.filter()
+    jobs_created_month = []
+    for job2 in job1:
+        if job2.created_at.date().month == month1 and job2.created_at.date().year == year1:
+            jobs_created_month.append(job2)
+            
+       
+    month_app = []
+    applications = Application.objects.all()
+    for app in applications:
+        if app.application_date.date().month == month1 and app.application_date.date().year == year1 :
+            month_app.append(app)
+
+    template_path = 'users/reports/pdfreport.html'
+    context ={'teachers_created_this_month':teachers_created_this_month, 'jobs_created_month':jobs_created_month,  'month2':month2, 'year1': year1, 'month_app':month_app}
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="'+ month2 +' reports.pdf"'
+    template = get_template(template_path)
+    html = template.render(context)
+
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+    
+
+# def pay(request):
+
+#     response = service.collect.mpesa_stk_push(phone_number= '254703156845', email='vchalloh@gmail.com', amount=1, narrative='purchase')
+
+#     print(response)
+#     invoice_id = response['invoice']['invoice_id']
+#     phone_number = response['customer']['phone_number']
+
+#     print('invoice_id:', invoice_id)
+#     print('phone_number:', phone_number)
+
+
+#     return render(request, 'users/pay.html')
+
+
+def update_user_paid_status(request):
+    bd=request.body
+    data = json.loads(bd) 
+    user_id = data['id']
+    print(user_id)
+    
+    user = User.objects.get(id=user_id)
+    print(user)
+    user.has_paid = True
+    user.save()
+    return JsonResponse({'status': 'success'})
+
 
 
 

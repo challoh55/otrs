@@ -96,7 +96,8 @@
                     <div class="messages-area bg-body-secondary" id="messages-area">
                         {% for message in messages %}
                         <div class="message {% if message.sender == request.user %}right {% else %}left{% endif %}">
-                            <div class="sent-by text-dark">{{ message.sender.username }}</div>
+                            <div class="sent-by text-dark">{{ messa
+                                ge.sender.username }}</div>
                             <div class="content">{{ message.message }} <small>{{ message.date_created | time }}</small>
                             </div>
                         </div>

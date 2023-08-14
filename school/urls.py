@@ -15,4 +15,6 @@ urlpatterns = [
     path('inactivate-job', views.inactivate_job, name='inactivate_job'),
     path('all-applicants/', views.all_applicants, name='all_applicants'),
     path('applicants-for-subject/<str:subject>/', views.applicants_for_subject, name='applicants_for_subject'),
+    path('school-profile/update-user-paid-status', views.update_user_paid_status, name='update_user_paid_status'),
+
 ]
